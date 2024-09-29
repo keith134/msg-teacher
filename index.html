@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages for Teachers</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #333, #4a4a4a);
+            color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background: #2a2a2a;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            padding: 30px;
+            transition: all 0.5s ease-in-out;
+            position: relative;
+            z-index: 10;
+        }
+        .form-container {
+            display: none;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease-in-out forwards;
+        }
+        .form-container.active {
+            display: block;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background: linear-gradient(135deg, #3a3a3a, #5a5a5a);
+            color: #f5f5f5;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+            outline: none;
+            transition: all 0.3s ease-in-out;
+        }
+        input[type="text"]:focus, input[type="number"]:focus {
+            background: linear-gradient(135deg, #5a5a5a, #7a7a7a);
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background: linear-gradient(135deg, #1e90ff, #0a74da);
+            color: #f5f5f5;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        button:hover {
+            background: linear-gradient(135deg, #0a74da, #0652b0);
+            transform: translateY(-3px);
+        }
+        .message-box {
+            max-height: 300px;
+            overflow-y: auto;
+            background: #3a3a3a;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: slideIn 1s ease-in-out forwards;
+        }
+        .message {
+            background: linear-gradient(135deg, #4a4a4a, #6a6a6a);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+        }
+        .message p {
+            margin: 0;
+        }
+        .message button {
+            background: #ff6347;
+            cursor: pointer;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+        }
+        .message button:hover {
+            background: #e05339;
+            transform: scale(1.1);
+        }
+        .background-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .background-animation .circle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            animation: move 10s infinite ease-in-out;
+        }
+        .background-animation .circle:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 30%;
+            left: 10%;
+            animation-duration: 8s;
+        }
+        .background-animation .circle:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            left: 80%;
+            animation-duration: 12s;
+        }
+        .background-animation .circle:nth-child(3) {
+            width: 75px;
+            height: 75px;
+            top: 50%;
+            left: 50%;
+            animation-duration: 10s;
+        }
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes move {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(20px) rotate(180deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animation">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+    <div class="container animation-container">
+        <div id="loginForm" class="form-container active">
+            <h2>Login</h2>
+            <input type="text" id="name" placeholder="Name" required>
+            <input type="number" id="age" placeholder="Age" required>
+            <input type="text" id="grade" placeholder="Grade" required>
+            <input type="text" id="section" placeholder="Section" required>
+            <button onclick="submitLogin()">Submit</button>
+        </div>
+        <div id="messageForm" class="form-container">
+            <h2>Message to Teacher</h2>
+            <input type="text" id="messageName" placeholder="Your Name" required>
+            <input type="text" id="teacherMessage" placeholder="Your Message" required>
+            <button onclick="submitMessage()">Submit</button>
+        </div>
+        <div id="messageBox" class="message-box">
+            <h3>Messages</h3>
+        </div>
+    </div>
+    <script>
+        // Check if there are saved messages in local storage
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMessages();
+        });
+
+        function submitLogin() {
+            document.getElementById('loginForm').classList.remove('active');
+            document.getElementById('messageForm').classList.add('active');
+        }
+
+        function submitMessage() {
+            const name = document.getElementById('messageName').value;
+            const message = document.getElementById('teacherMessage').value;
+
+            if (name && message) {
+                saveMessage(name, message);
+                displayMessage(name, message);
+                clearMessageForm();
+            }
+        }
+
+        function saveMessage(name, message) {
+            let messages = JSON.parse(localStorage.getItem('messages')) || [];
+            messages.push({ name, message });
+            localStorage.setItem('messages', JSON.stringify(messages));
+        }
+
+        function loadMessages() {
+            const messages = JSON.parse(localStorage.getItem('messages')) || [];
+            messages.forEach(msg => {
+                displayMessage(msg.name, msg.message);
+            });
+        }
+
+        function displayMessage(name, message) {
+            const messageBox = document.getElementById('messageBox');
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.innerHTML = `
+                <p><strong>${name}:</strong> ${message}</p>
+                <button onclick="deleteMessage(this)">Delete</button>
+            `;
+            messageBox.appendChild(messageDiv);
+        }
+
+        function deleteMessage(button) {
+            const messageDiv = button.parentElement;
+            const name = messageDiv.querySelector('strong').textContent;
+            const message = messageDiv.querySelector('p').textContent.replace(`${name}: `, '');
+            removeMessageFromStorage(name.replace(':', ''), message);
+            messageDiv.remove();
+        }
+
+        function removeMessageFromStorage(name, message) {
+            let messages = JSON.parse(localStorage.getItem('messages')) || [];
+            messages = messages.filter(msg => msg.name !== name || msg.message !== message);
+            localStorage.setItem('messages', JSON.stringify(messages));
+        }
+
+        function clearMessageForm() {
+            document.getElementById('messageName').value = '';
+            document.getElementById('teacherMessage').value = '';
+        }
+    </script>
+</body>
+</html>
